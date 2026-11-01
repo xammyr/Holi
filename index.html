@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <!-- Viewport optimizado para celulares modernos y pantallas táctiles -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#060312">
+  <meta name="description" content="Una dedicatoria especial con tulipanes morados y azules en una suave brisa nocturna.">
+  <title>Para mi novia | Con todo mi amor</title>
+  
+  <!-- Tipografías de alta elegancia -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Contenedor de estrellas parpadeantes y destellos -->
+  <div class="stars-container" id="stars-container"></div>
+  
+  <!-- Canvas para partículas flotantes de polen y luz lunar -->
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Audio con la canción de la carpeta musica -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="musica/The%20Mar%C3%ADas%20-%20Cari%C3%B1o.mp3" type="audio/mpeg">
+    <source src="musica/The Marías - Cariño.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Botón de música ambiental romántica -->
+  <button id="music-btn" class="music-control" type="button" aria-label="Reproducir o pausar música">
+    <span class="music-icon" id="music-icon">🎵</span>
+    <span class="music-text" id="music-text">Música</span>
+  </button>
+
+  <!-- Resplandor ambiental de fondo -->
+  <div class="sky-ambient-glow"></div>
+
+  <!-- Contenedor central superior con el mensaje de amor solicitado -->
+  <main class="content-wrapper">
+    <div class="message-card">
+      <div class="heart-badge" aria-hidden="true">
+        <span class="heart-symbol">💜</span>
+      </div>
+
+      <!-- El texto exacto solicitado por el usuario -->
+      <h1 class="romantic-message">
+        "te amo a cada instante y lo haria por el resto de mi vida"
+      </h1>
+      
+      <!-- Botón sutil para abrir cartita de amor -->
+      <button type="button" class="open-letter-badge" id="open-letter-btn">
+        <span>💌</span> Leer cartita para ti
+      </button>
+    </div>
+  </main>
+
+  <!-- Resplandor tenue en el jardín de tulipanes -->
+  <div class="field-glow"></div>
+
+  <!-- Campo de Tulipanes Morados y Azules con balanceo suave -->
+  <div class="tulips-field" id="tulips-field"></div>
+
+  <!-- Suelo suave con neblina nocturna -->
+  <div class="field-ground"></div>
+
+  <!-- Indicador sutil de interacción -->
+  <div class="tap-hint" id="tap-hint">Toca la pantalla para escuchar nuestra canción 💕</div>
+
+  <!-- Diálogo modal accesible con la carta de amor -->
+  <dialog id="love-letter-modal" closedby="any" aria-labelledby="modal-title">
+    <div class="letter-content">
+      <button type="button" class="close-modal-icon" id="close-modal-btn" aria-label="Cerrar carta">✕</button>
+      <div class="letter-heart-icon">💜</div>
+      <h2 id="modal-title" class="letter-title">Para Gabriela</h2>
+      <div class="letter-divider"></div>
+      <p class="letter-body">
+        Este pequeño detalle lo hice pensando en ti, porque a tu lado todo es más bonito.
+        Quería recordarte lo inmensamente feliz que me haces y lo mucho que significas para mí.
+      </p>
+      <p class="letter-quote">
+        "Te amo a cada instante y lo haría por el resto de mi vida."
+      </p>
+      <p class="letter-signature">
+        Siempre tuyo, con todo mi corazón 🌷✨
+      </p>
+      <form method="dialog">
+        <button class="letter-close-action" autofocus>Guardar en el corazón 💖</button>
+      </form>
+    </div>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>

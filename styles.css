@@ -1,0 +1,648 @@
+/* ========================================================
+   VARIABLES Y CONFIGURACIÓN BASE
+   ======================================================== */
+:root {
+  --bg-deep-night: #050210;
+  --bg-twilight-top: #150a2b;
+  --bg-twilight-mid: #1f1140;
+
+  --color-purple-primary: #9333ea;
+  --color-purple-light: #c084fc;
+  --color-blue-primary: #3b82f6;
+  --color-blue-light: #93c5fd;
+  --color-indigo-vibrant: #6366f1;
+  --color-cyan-glow: #38bdf8;
+  --color-rose-glow: #f472b6;
+
+  --font-romantic: 'Great Vibes', cursive;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Montserrat', system-ui, -apple-system, sans-serif;
+
+  --wind-timing: cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background-color: var(--bg-deep-night);
+  background: radial-gradient(circle at 50% 15%, #1d113d 0%, #0c0620 50%, #050210 100%);
+  font-family: var(--font-serif);
+  color: #ffffff;
+  user-select: none;
+  position: relative;
+}
+
+/* ========================================================
+   FONDO ESTRELLADO Y RESPLANDOR
+   ======================================================== */
+.stars-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.9), 0 0 14px rgba(192, 132, 252, 0.7);
+  animation: twinkle var(--duration, 3.2s) infinite ease-in-out var(--delay, 0s);
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(0.6);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.3);
+  }
+}
+
+.sky-ambient-glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 800px;
+  height: 55%;
+  background: radial-gradient(ellipse at 50% 30%, rgba(147, 51, 234, 0.18) 0%, rgba(59, 130, 246, 0.1) 45%, transparent 75%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+#particles-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ========================================================
+   BOTÓN DE MÚSICA AMBIENTAL
+   ======================================================== */
+.music-control {
+  position: absolute;
+  top: max(env(safe-area-inset-top, 16px), 16px);
+  right: 18px;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(192, 132, 252, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 8px 16px;
+  border-radius: 30px;
+  color: #e9d5ff;
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.music-control:hover, .music-control:active {
+  background: rgba(168, 85, 247, 0.25);
+  border-color: rgba(192, 132, 252, 0.7);
+  transform: scale(1.04);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+}
+
+.music-control.playing {
+  background: rgba(147, 51, 234, 0.35);
+  border-color: #c084fc;
+}
+
+.music-control.playing .music-icon {
+  animation: pulseMusic 1.3s infinite ease-in-out;
+}
+
+@keyframes pulseMusic {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3) rotate(8deg); }
+}
+
+/* ========================================================
+   MENSAJE CENTRAL SUPERIOR (ROMÁNTICO Y RESPONSIVO)
+   ======================================================== */
+.content-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 48%;
+  height: 48dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  padding: 30px 20px 0 20px;
+  text-align: center;
+}
+
+.message-card {
+  max-width: 620px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: floatCard 6s ease-in-out infinite, fadeInCard 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.heart-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.35) 0%, rgba(59, 130, 246, 0.15) 70%, transparent 100%);
+  border: 1px solid rgba(192, 132, 252, 0.4);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+  margin-bottom: 12px;
+  animation: heartbeat 2.4s infinite ease-in-out;
+}
+
+.heart-symbol {
+  font-size: 1.35rem;
+  filter: drop-shadow(0 0 8px rgba(192, 132, 252, 0.8));
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.18); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.22); }
+  56% { transform: scale(1); }
+}
+
+/* El texto exacto de la dedicatoria */
+.romantic-message {
+  font-family: var(--font-romantic);
+  font-size: clamp(2.2rem, 7.5vw, 3.8rem);
+  font-weight: 400;
+  line-height: 1.28;
+  letter-spacing: 0.015em;
+  text-wrap: balance;
+  
+  /* Gradiente sublime celestial entre blanco puro, lavanda y azul */
+  background: linear-gradient(135deg, #ffffff 0%, #f5e8ff 25%, #d8b4fe 52%, #93c5fd 80%, #ffffff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  /* Resplandor suave envolvente */
+  filter: drop-shadow(0 2px 14px rgba(168, 85, 247, 0.55)) drop-shadow(0 0 32px rgba(59, 130, 246, 0.4));
+  margin-bottom: 10px;
+  padding: 0 10px;
+}
+
+.subtitle {
+  font-family: var(--font-sans);
+  font-size: clamp(0.72rem, 2.2vw, 0.88rem);
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(224, 231, 255, 0.75);
+  text-shadow: 0 0 12px rgba(147, 197, 253, 0.5);
+  margin-bottom: 14px;
+}
+
+/* Botón sutil de cartita */
+.open-letter-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(192, 132, 252, 0.35);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 7px 18px;
+  border-radius: 20px;
+  color: #ede9fe;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.open-letter-badge:hover, .open-letter-badge:active {
+  background: rgba(168, 85, 247, 0.3);
+  border-color: rgba(216, 180, 254, 0.75);
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px rgba(168, 85, 247, 0.55);
+}
+
+@keyframes floatCard {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes fadeInCard {
+  0% {
+    opacity: 0;
+    transform: translateY(22px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ========================================================
+   CAMPO DE TULIPANES (EN CAPAS, BRISA SUAVE Y REALISTA)
+   ======================================================== */
+.tulips-field {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 52%;
+  height: 52dvh;
+  z-index: 5;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.field-glow {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 900px;
+  height: 48%;
+  background: radial-gradient(ellipse at bottom, rgba(147, 51, 234, 0.22) 0%, rgba(59, 130, 246, 0.12) 50%, transparent 80%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.field-ground {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 75px;
+  background: linear-gradient(to top, rgba(5, 2, 16, 0.98) 0%, rgba(13, 7, 34, 0.7) 50%, transparent 100%);
+  z-index: 6;
+  pointer-events: none;
+}
+
+/* Contenedor individual de cada flor */
+.tulip-item {
+  position: absolute;
+  bottom: -15px;
+  transform-origin: 50% 100%;
+  will-change: transform;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.65));
+}
+
+.tulip-item svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Animación de viento suave y orgánico con balanceo asimétrico */
+.tulip-sway {
+  animation: windSway var(--sway-duration, 5.5s) var(--wind-timing) infinite alternate var(--sway-delay, 0s);
+  transform-origin: 50% 100%;
+}
+
+@keyframes windSway {
+  0% {
+    transform: rotate(var(--angle-left, -3.2deg)) skewX(0.5deg);
+  }
+  38% {
+    transform: rotate(calc(var(--angle-right, 3.8deg) * 0.45)) skewX(-0.4deg);
+  }
+  68% {
+    transform: rotate(calc(var(--angle-left, -3.2deg) * 0.25)) skewX(0.2deg);
+  }
+  100% {
+    transform: rotate(var(--angle-right, 3.8deg)) skewX(0.8deg);
+  }
+}
+
+/* Cabeza del tulipán con inclinación secundaria al viento (inercia orgánica) */
+.tulip-head-group {
+  transform-origin: 50px 88px;
+  animation: headSway calc(var(--sway-duration, 5.5s) * 0.92) ease-in-out infinite alternate var(--sway-delay, 0s);
+  will-change: transform;
+}
+
+@keyframes headSway {
+  0% {
+    transform: rotate(-1.8deg);
+  }
+  100% {
+    transform: rotate(2.4deg);
+  }
+}
+
+/* Hojas con oscilación suave propia al compás de la brisa */
+.leaf-left {
+  transform-origin: 48px 330px;
+  animation: leafMoveLeft 6.5s ease-in-out infinite alternate;
+}
+
+.leaf-right {
+  transform-origin: 52px 300px;
+  animation: leafMoveRight 7.0s ease-in-out infinite alternate;
+}
+
+@keyframes leafMoveLeft {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-3.5deg); }
+}
+
+@keyframes leafMoveRight {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(4.0deg); }
+}
+
+/* Brillo sutil de los pétalos con la luz de luna */
+.petal-glow {
+  filter: drop-shadow(0 0 10px var(--glow-color, rgba(168, 85, 247, 0.45)));
+}
+
+/* ========================================================
+   INDICADOR INTERACTIVO Y CORAZONES AL TOCAR
+   ======================================================== */
+.tap-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: rgba(216, 180, 254, 0.6);
+  z-index: 20;
+  pointer-events: none;
+  text-align: center;
+  transition: opacity 1s ease;
+  animation: pulseHint 3s infinite ease-in-out;
+}
+
+@keyframes pulseHint {
+  0%, 100% { opacity: 0.35; transform: translateX(-50%) scale(1); }
+  50% { opacity: 0.8; transform: translateX(-50%) scale(1.05); }
+}
+
+.floating-heart {
+  position: absolute;
+  pointer-events: none;
+  font-size: 1.6rem;
+  z-index: 100;
+  user-select: none;
+  animation: flyHeart 2.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes flyHeart {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.6) rotate(0deg);
+  }
+  35% {
+    opacity: 0.95;
+    transform: translate(-50%, -90px) scale(1.25) rotate(var(--rot, 15deg));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--dx, 20px)), -220px) scale(0.75) rotate(var(--rot, 30deg));
+  }
+}
+
+/* ========================================================
+   MODAL DE CARTA DE AMOR (HTML <dialog> MODERNO)
+   ======================================================== */
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background: rgba(4, 2, 14, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: opacity 0.35s ease;
+}
+
+#love-letter-modal {
+  margin: auto;
+  border: 1px solid rgba(192, 132, 252, 0.4);
+  border-radius: 24px;
+  background: linear-gradient(145deg, rgba(28, 16, 56, 0.95) 0%, rgba(13, 8, 30, 0.98) 100%);
+  color: #ffffff;
+  padding: 0;
+  max-width: 440px;
+  width: calc(100% - 40px);
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(168, 85, 247, 0.35);
+  outline: none;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease;
+}
+
+.letter-content {
+  padding: 32px 26px 28px 26px;
+  position: relative;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.close-modal-icon {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: #d8b4fe;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.close-modal-icon:hover {
+  background: rgba(168, 85, 247, 0.3);
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.letter-heart-icon {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 0 10px rgba(192, 132, 252, 0.7));
+}
+
+.letter-title {
+  font-family: var(--font-romantic);
+  font-size: 2.4rem;
+  font-weight: 400;
+  color: #f3e8ff;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  text-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+}
+
+.letter-divider {
+  width: 50px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #c084fc, transparent);
+  margin: 8px 0 16px 0;
+}
+
+.letter-body {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: #e9d5ff;
+  margin-bottom: 16px;
+}
+
+.letter-quote {
+  font-family: var(--font-romantic);
+  font-size: 1.75rem;
+  line-height: 1.35;
+  color: #93c5fd;
+  text-shadow: 0 0 12px rgba(147, 197, 253, 0.5);
+  margin-bottom: 16px;
+}
+
+.letter-signature {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  color: #c4b5fd;
+  margin-bottom: 22px;
+}
+
+.letter-close-action {
+  background: linear-gradient(135deg, #7e22ce 0%, #3b82f6 100%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(147, 51, 234, 0.4);
+  transition: all 0.25s ease;
+}
+
+.letter-close-action:hover, .letter-close-action:active {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(147, 51, 234, 0.7);
+}
+
+/* ========================================================
+   MODO REDUCIDO DE MOVIMIENTO (ACCESIBILIDAD)
+   ======================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .tulip-sway,
+  .tulip-head-group,
+  .leaf-left,
+  .leaf-right,
+  .message-card,
+  .heart-badge,
+  .star,
+  .tap-hint {
+    animation: none !important;
+  }
+}
+
+/* ========================================================
+   RESPONSIVIDAD Y OPTIMIZACIÓN CELULARES
+   ======================================================== */
+@media (max-width: 600px) {
+  .content-wrapper {
+    height: 48%;
+    height: 48dvh;
+    padding: 20px 14px 0 14px;
+  }
+
+  .romantic-message {
+    font-size: clamp(2.0rem, 8.2vw, 2.7rem);
+    line-height: 1.25;
+  }
+
+  .tulips-field {
+    height: 52%;
+    height: 52dvh;
+  }
+
+  .music-control {
+    padding: 6px 13px;
+    font-size: 0.75rem;
+  }
+
+  .letter-content {
+    padding: 26px 20px 22px 20px;
+  }
+
+  .letter-title {
+    font-size: 2.1rem;
+  }
+
+  .letter-body {
+    font-size: 1.05rem;
+  }
+}
+
+@media (max-height: 650px) {
+  .content-wrapper {
+    height: 45%;
+    padding-top: 15px;
+  }
+  .tulips-field {
+    height: 55%;
+  }
+  .romantic-message {
+    font-size: 1.85rem;
+    margin-bottom: 6px;
+  }
+  .heart-badge {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 8px;
+  }
+}
